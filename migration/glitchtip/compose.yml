@@ -1,0 +1,91 @@
+# Candidate only; see README.md before deployment.
+name: libraxis-glitchtip
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-environment: &environment
+  DATABASE_URL: postgres://glitchtip:${GLITCHTIP_DB_PASSWORD:?Set a hex database password}@glitchtip-postgres:5432/glitchtip
+  VALKEY_URL: redis://glitchtip-valkey:6379/0
+  SECRET_KEY: ${GLITCHTIP_SECRET_KEY:?Set a random secret key}
+  EMAIL_URL: ${GLITCHTIP_EMAIL_URL:?Set the SMTP URL}
+  DEFAULT_FROM_EMAIL: ${GLITCHTIP_FROM_EMAIL:?Set the verified sender}
+  GLITCHTIP_DOMAIN: https://sentry.vistavet.app
+  ALLOWED_HOSTS: sentry.vistavet.app,localhost,127.0.0.1
+  CSRF_TRUSTED_ORIGINS: https://sentry.vistavet.app
+  ENABLE_USER_REGISTRATION: "False"
+  ENABLE_SOCIAL_APPS_USER_REGISTRATION: "False"
+  GLITCHTIP_RETENTION_DAYS: "90"
+  GLITCHTIP_ENABLE_DUCKDB: "False"
+  GLITCHTIP_ENABLE_LOGS: "False"
+  LOG_LEVEL: WARNING
+
+services:
+  glitchtip-postgres:
+    image: ${GLITCHTIP_POSTGRES_IMAGE:?Set a reviewed PostgreSQL 18 image digest}
+    environment:
+      POSTGRES_DB: glitchtip
+      POSTGRES_USER: glitchtip
+      POSTGRES_PASSWORD: ${GLITCHTIP_DB_PASSWORD:?Set a hex database password}
+    volumes:
+      - postgres:/var/lib/postgresql
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U glitchtip -d glitchtip"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    logging: *logging
+
+  glitchtip-valkey:
+    image: ${GLITCHTIP_VALKEY_IMAGE:?Set a reviewed Valkey 9 image digest}
+    command: [valkey-server, --appendonly, "yes"]
+    volumes:
+      - valkey:/data
+    healthcheck:
+      test: [CMD, valkey-cli, ping]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    logging: *logging
+
+  glitchtip-web:
+    image: ${GLITCHTIP_IMAGE:?Set a reviewed GlitchTip 6.2.5 image digest}
+    environment:
+      <<: *environment
+      SERVER_ROLE: web
+    depends_on:
+      glitchtip-postgres:
+        condition: service_healthy
+      glitchtip-valkey:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:18000:8000"
+    volumes:
+      - uploads:/code/uploads
+    restart: unless-stopped
+    logging: *logging
+
+  glitchtip-worker:
+    image: ${GLITCHTIP_IMAGE:?Set a reviewed GlitchTip 6.2.5 image digest}
+    environment:
+      <<: *environment
+      SERVER_ROLE: worker
+    depends_on:
+      glitchtip-postgres:
+        condition: service_healthy
+      glitchtip-valkey:
+        condition: service_healthy
+    volumes:
+      - uploads:/code/uploads
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  postgres:
+  valkey:
+  uploads:

@@ -1,0 +1,12 @@
+# Replacement for the existing sentry.vistavet.app block ONLY.
+# Host Caddy; backend port is loopback-only. No DNS change is expected.
+sentry.vistavet.app {
+	reverse_proxy 127.0.0.1:18000
+	log {
+		output file /var/log/caddy/sentry.vistavet.app.log {
+			roll_size 10mb
+			roll_keep 3
+		}
+		format json
+	}
+}

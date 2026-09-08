@@ -1,5 +1,10 @@
 # RUNBOOK — self-hosted Sentry na dragonie
 
+Aktualizacja 2026-09-08: publiczny health zwraca 502, Colima nie wykonuje
+`bash` (Input/output error). Poniższy opis operacyjny jest historyczny.
+[Kandydat migracji do GlitchTip](migration/glitchtip/README.md) zawiera aktualne
+ustalenia i bramki migracji; nie został wdrożony.
+
 Stan na 2026-08-26. Deployment postawiony 2026-04-21 (26.4.0), zmigrowany
 2026-04-28 na nightly `26.5.0.dev0+c5b6ba87` (obraz z 2026-04-28). Dane żyją
 w wolumenach Dockera wewnątrz VM Colima — przeżywają `docker compose down`
