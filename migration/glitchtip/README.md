@@ -1,6 +1,42 @@
 # GlitchTip migration candidate — 2026-09-08
 
-Status: prepared, not deployed. This directory is a reviewable candidate for
+Status: DEPLOYED 2026-09-08 (see "Deployed" below). The candidate text that follows
+is the pre-deployment review record and stays as written.
+
+## Deployed 2026-09-08 23:05–23:40 CEST (claude, Founder goal in session)
+
+- Host: libraxis-vm (`ops`, x86_64, Docker 29.2.1, Compose v5.0.2). Project
+  `libraxis-glitchtip`, files `/etc/glitchtip/compose.yml` (this compose, verbatim)
+  and `/etc/glitchtip/runtime.env` (0600, root). Admin login in
+  `/etc/glitchtip/admin.txt` (0600), DSNs + read-only API token `ops-probe` in
+  `/etc/glitchtip/dsns.txt` (0600). Nothing of that is in Git.
+- Images pinned by digest, amd64: `glitchtip/glitchtip:6.2.6`
+  (`sha256:a3d8eb1b…e0dff6`), `postgres:18-bookworm` (`sha256:1c59e2c3…d7e1af`),
+  `valkey/valkey:9.1.2-alpine` (`sha256:a0dbf4c1…95d30b`). 6.2.6 supersedes the
+  6.2.5 named in the candidate text (latest patch on Docker Hub at cutover).
+- SMTP: the Resend credentials from the old Sentry `.env.custom`, URL-encoded into
+  `GLITCHTIP_EMAIL_URL`. Alert e-mail delivery NOT yet verified.
+- Organization `libraxisai` (owner void@div0.space), team `ops`, projects
+  `lbrx-services` (id 1), `vista-brain` (id 2), `vista-app` (id 3). Portal BE/FE
+  emitters from the old six-project list were NOT recreated (Founder call).
+- Caddy: only the `sentry.vistavet.app` block replaced with `migration/glitchtip/Caddyfile`;
+  full backup `/etc/caddy/Caddyfile.bak-20260908-213201-pre-glitchtip`; `caddy validate`
+  OK, `systemctl reload caddy`, public `/_health/` 200. DNS untouched.
+- Dragon: `lbrx-services/.env.observability` got the two new DSNs (old file kept as
+  `.env.observability.bak-20260908-sentry-dragon`); api-router, proxy-router,
+  status-server, libraxis-api, arq-worker restarted via `lbrx-ctl` (zsh). STT ×3 and
+  the 8100 runtime keep the old DSN until their next restart. Vista desktop app DSN
+  (project `vista-app`) is a Founder/Monika hand-off, not applied.
+- Acceptance probe (sentry_sdk 2.60.0 from api-router venv, unique RuntimeError,
+  release `glitchtip-cutover-20260908`, env `dragon-probe`): lbrx-services event
+  `5b5d232517b24a7db715ea1e1d59347b` found via API in 3.4 s; vista-brain event
+  `a40ee47a609949fe818ec83b0fb55a4b` in 3.3 s; both with stacktrace, release and
+  environment intact.
+- NOT done: off-host backup and restore proof, alert e-mail receipt, uptime alerts,
+  retention scheduling check, RAM/disk under real traffic. VM RAM after start:
+  about 2.4 GB used of 16 GB.
+
+ This directory is a reviewable candidate for
 admission to the deployment owner. It does not replace the Sentry root Compose.
 The Founder proposal is basic telemetry on the Linux VM. The choices below are
 agent proposals; live deployment and retirement remain Founder buttons.

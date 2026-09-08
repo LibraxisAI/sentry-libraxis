@@ -1,9 +1,12 @@
 # RUNBOOK — self-hosted Sentry na dragonie
 
-Aktualizacja 2026-09-08: publiczny health zwraca 502, Colima nie wykonuje
-`bash` (Input/output error). Poniższy opis operacyjny jest historyczny.
-[Kandydat migracji do GlitchTip](migration/glitchtip/README.md) zawiera aktualne
-ustalenia i bramki migracji; nie został wdrożony.
+Aktualizacja 2026-09-08 23:40: stary stack jest WYŁĄCZONY. Decyzją Foundera
+(sesja 2026-09-08, „spierdala" na datadisk Colimy) profil `default` Colimy i jego
+dysk 77 GB zostały skasowane razem z wolumenami Sentry; autostart `homebrew.mxcl.colima`
+zatrzymany, agent `io.vetcoders.sentry-stack-watchdog` wyładowany (plist zostaje).
+Telemetria żyje w GlitchTipie na libraxis-vm — patrz
+[migration/glitchtip/README.md](migration/glitchtip/README.md), sekcja „Deployed".
+Poniższy opis operacyjny jest historyczny.
 
 Stan na 2026-08-26. Deployment postawiony 2026-04-21 (26.4.0), zmigrowany
 2026-04-28 na nightly `26.5.0.dev0+c5b6ba87` (obraz z 2026-04-28). Dane żyją

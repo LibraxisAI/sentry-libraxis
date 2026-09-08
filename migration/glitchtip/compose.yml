@@ -1,4 +1,4 @@
-# Candidate only; see README.md before deployment.
+# Deployed 2026-09-08 on libraxis-vm as /etc/glitchtip/compose.yml (env: /etc/glitchtip/runtime.env, 0600). See README.md.
 name: libraxis-glitchtip
 
 x-logging: &logging
@@ -54,7 +54,7 @@ services:
     logging: *logging
 
   glitchtip-web:
-    image: ${GLITCHTIP_IMAGE:?Set a reviewed GlitchTip 6.2.5 image digest}
+    image: ${GLITCHTIP_IMAGE:?Set a reviewed GlitchTip 6.2.x image digest}
     environment:
       <<: *environment
       SERVER_ROLE: web
@@ -71,7 +71,7 @@ services:
     logging: *logging
 
   glitchtip-worker:
-    image: ${GLITCHTIP_IMAGE:?Set a reviewed GlitchTip 6.2.5 image digest}
+    image: ${GLITCHTIP_IMAGE:?Set a reviewed GlitchTip 6.2.x image digest}
     environment:
       <<: *environment
       SERVER_ROLE: worker
