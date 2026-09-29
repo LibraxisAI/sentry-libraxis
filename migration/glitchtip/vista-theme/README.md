@@ -6,7 +6,8 @@ system is compiled into the Angular frontend. This small derivative image keeps
 the GlitchTip application intact and adds one same-origin stylesheet after its
 generated CSS. It changes Material color roles, selected navigation, card and
 form surfaces, focus rings, and motion. Error, warning, and uptime remain
-distinct. The logo and product attribution remain GlitchTip.
+distinct. The login identifies the Vista VET observability instance, while a
+monochrome GlitchTip wordmark keeps the product attribution.
 
 The palette follows Vista's binding desktop brand contract:
 graphite `#171513`, bone `#F4EFE4`, paper `#FFFCF4`, ochre `#B38F6B`, teal
@@ -41,3 +42,6 @@ behavior differs, restore the previous digest and restart web/worker.
 
 The image built during preparation is only a candidate; a successful image
 build and color-contrast calculation do not prove the live panel has changed.
+The candidate login was rendered locally in Chromium.app through an isolated
+loopback preview; authenticated issue and uptime screens still require review
+before activating the image.
