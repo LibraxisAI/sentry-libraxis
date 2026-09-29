@@ -1,0 +1,129 @@
+/* Vista VET observability skin for the pinned GlitchTip 6.2.6 frontend.
+   Brand roles follow vista/docs/BRAND_CONTRACT.md. Material system tokens are
+   used so issues, projects, settings, login, and dialogs stay in one language.
+   Both system theme and GlitchTip's explicit light/dark preference are handled
+   by light-dark() and the color-scheme property set by GlitchTip. */
+
+:root {
+  --vista-graphite: #171513;
+  --vista-bone: #f4efe4;
+  --vista-paper: #fffcf4;
+  --vista-ochre: #b38f6b;
+  --vista-teal: #3f837a;
+  --vista-burden: #8a5a4d;
+
+  --mat-sys-primary: light-dark(var(--vista-graphite), var(--vista-bone));
+  --mat-sys-on-primary: light-dark(var(--vista-paper), var(--vista-graphite));
+  --mat-sys-primary-container: light-dark(#ebe5db, #3c3731);
+  --mat-sys-on-primary-container: light-dark(var(--vista-graphite), var(--vista-bone));
+  --mat-sys-secondary: light-dark(#2e645d, #9dcfc6);
+  --mat-sys-on-secondary: light-dark(var(--vista-paper), var(--vista-graphite));
+  --mat-sys-secondary-container: light-dark(#d9ebe5, #29443f);
+  --mat-sys-on-secondary-container: light-dark(#163f3a, #d9ebe5);
+  --mat-sys-tertiary: light-dark(#715734, #d5b992);
+  --mat-sys-on-tertiary: light-dark(var(--vista-paper), var(--vista-graphite));
+
+  --mat-sys-background: light-dark(var(--vista-paper), #0d0d0c);
+  --mat-sys-on-background: light-dark(var(--vista-graphite), var(--vista-bone));
+  --mat-sys-surface: light-dark(var(--vista-paper), #171513);
+  --mat-sys-on-surface: light-dark(var(--vista-graphite), var(--vista-bone));
+  --mat-sys-surface-variant: light-dark(#ede8dd, #302c28);
+  --mat-sys-on-surface-variant: light-dark(#5c554d, #c9c0b2);
+  --mat-sys-surface-container-lowest: light-dark(#ffffff, #0d0d0c);
+  --mat-sys-surface-container-low: light-dark(#f7f3ea, #171513);
+  --mat-sys-surface-container: light-dark(#f1ece2, #211e1a);
+  --mat-sys-surface-container-high: light-dark(#eae4d9, #292520);
+  --mat-sys-surface-container-highest: light-dark(#e1d9cd, #342f29);
+  --mat-sys-outline: light-dark(#81786d, #9c9183);
+  --mat-sys-outline-variant: light-dark(#d4cbbd, #484139);
+  --mat-sys-error: light-dark(#7f473c, #e8afa3);
+  --mat-sys-on-error: light-dark(var(--vista-paper), #321913);
+  --mat-sys-error-container: light-dark(#f4ddd7, #4b302c);
+  --mat-sys-on-error-container: light-dark(#572b25, #f5dcd6);
+
+  --warning-color: light-dark(#75572d, #d5b992);
+  --warning-container: light-dark(#f2e7d4, #473a29);
+  --on-warning: light-dark(#352916, #f4efe4);
+  --info-color: light-dark(#2e645d, #9dcfc6);
+  --info-container: light-dark(#d9ebe5, #29443f);
+  --on-info: light-dark(#163f3a, #d9ebe5);
+  --success-color: light-dark(#2e645d, #9dcfc6);
+  --success-container: light-dark(#d9ebe5, #29443f);
+  --on-success: light-dark(#163f3a, #d9ebe5);
+  --issues-color: var(--vista-burden);
+  --uptime-color: var(--vista-teal);
+  --logs-color: var(--vista-ochre);
+}
+
+body,
+mat-card,
+mat-dialog-container,
+mat-sidenav,
+mat-sidenav-content {
+  font-family: "Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+  font-weight: 500;
+}
+
+.mat-mdc-card,
+.mat-mdc-dialog-surface,
+.mat-mdc-menu-panel {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 10px;
+  box-shadow: 0 3px 14px rgb(0 0 0 / 7%);
+}
+
+.mat-mdc-button-base,
+.mat-mdc-text-field-wrapper,
+.mat-mdc-form-field-focus-overlay {
+  border-radius: 6px;
+}
+
+.mat-mdc-button-base {
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.mat-mdc-button-base:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--vista-ochre);
+  outline-offset: 2px;
+}
+
+.active-section {
+  background: var(--mat-sys-primary-container);
+  border-inline-start: 3px solid var(--vista-ochre);
+  border-radius: 6px;
+}
+
+.active-section .mdc-list-item__primary-text,
+.active-section span[matListItemTitle],
+.active-section mat-icon,
+.active-section .arrow-icon {
+  color: var(--mat-sys-on-primary-container);
+}
+
+.auth-form-wrapper {
+  background: var(--mat-sys-surface-container-low);
+}
+
+.auth-form {
+  max-width: 430px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 8%);
+}
+
+@media (max-width: 600px) {
+  .auth-form {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mat-mdc-button-base {
+    transition: none;
+  }
+}
